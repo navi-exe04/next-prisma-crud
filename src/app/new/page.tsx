@@ -1,7 +1,7 @@
 import React from 'react'
 
 export default function page() {
-  return (
-    <div>TASKS</div>
-  )
+    return (
+        <div>NEW task</div>
+    )
 }
