@@ -2,25 +2,32 @@ import { NextResponse } from "next/server";
 import { prisma } from "@/libs/prisma";
 
 type Task = {
-    id: number,
+    id?: number
     title: string,
     description: string,
-    createdAt: Date
+    createdAt?: Date
 }
 
 export async function GET() : Promise<NextResponse> {
-    const tasks : Task[] = await prisma.task.findMany();
+    const tasks = await prisma.task.findMany();
     return NextResponse.json(tasks);
 }
 
-export function POST() : NextResponse {
-    return NextResponse.json('GUARDANDO TAREAS');
+export async function POST(request : Request) : Promise<NextResponse> {
+    const {title, description} = await request.json();
+    const newTask = await prisma.task.create({
+        data: {
+            title,
+            description
+        }
+    })
+    return NextResponse.json(newTask);
 }
 
-export function PUT() : NextResponse {
-    return NextResponse.json('ACTUALIZANDO TAREAS');
-}
+// export function PUT() : NextResponse {
+//     return NextResponse.json('ACTUALIZANDO TAREAS');
+// }
 
-export function DELETE() : NextResponse {
-    return NextResponse.json('ELIMINANDO TAREAS');
-}
+// export function DELETE() : NextResponse {
+//     return NextResponse.json('ELIMINANDO TAREAS');
+// }
